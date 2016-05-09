@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Immutable.Extensions", "Bridge.Immutable.Extensions\Bridge.Immutable.Extensions.csproj", "{A1CF29ED-A8A7-405F-99D2-ED809C7F6590}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductiveRage.Immutable.Extensions", "ProductiveRage.Immutable.Extensions\ProductiveRage.Immutable.Extensions.csproj", "{A1CF29ED-A8A7-405F-99D2-ED809C7F6590}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
