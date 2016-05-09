@@ -1,4 +1,5 @@
 ﻿using System;
+using Bridge;
 using Bridge.React;
 
 namespace ProductiveRage.Immutable.Extensions
