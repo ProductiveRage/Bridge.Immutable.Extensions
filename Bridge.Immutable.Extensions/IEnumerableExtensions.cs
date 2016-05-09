@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProductiveRage.Immutable;
 
-namespace Bridge.Immutable.Extensions
+namespace ProductiveRage.Immutable.Extensions
 {
 	public static class IEnumerableExtensions
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using Bridge.React;
 
-namespace Bridge.Immutable.Extensions
+namespace ProductiveRage.Immutable.Extensions
 {
 	public sealed class NonBlankTrimmedString
 	{
