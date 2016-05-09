@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="NonBlankTrimmedString.cs" />
+    <Compile Include="OptionalNonBlankTrimmedStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
