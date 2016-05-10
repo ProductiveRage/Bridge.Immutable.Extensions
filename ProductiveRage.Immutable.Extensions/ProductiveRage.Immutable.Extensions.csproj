@@ -7,7 +7,7 @@
     <ProjectGuid>{A1CF29ED-A8A7-405F-99D2-ED809C7F6590}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProductiveRage.Immutable.Extensions</RootNamespace>
+    <RootNamespace>ProductiveRage.Immutable</RootNamespace>
     <AssemblyName>ProductiveRage.Immutable.Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

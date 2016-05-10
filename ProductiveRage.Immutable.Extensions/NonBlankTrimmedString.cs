@@ -2,7 +2,7 @@
 using Bridge;
 using Bridge.React;
 
-namespace ProductiveRage.Immutable.Extensions
+namespace ProductiveRage.Immutable
 {
 	// While I think that 99% of classes should be either abstract or sealed, this has value in not being sealed it is likely to be a common base for other
 	// types that may want to effectively be a NonBlankTrimmedString-with-some-extra-validation (or just a specialisation of NonBlankTrimmedString to aid

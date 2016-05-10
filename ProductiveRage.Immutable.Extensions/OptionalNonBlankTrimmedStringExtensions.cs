@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProductiveRage.Immutable.Extensions
+namespace ProductiveRage.Immutable
 {
 	public static class OptionalNonBlankTrimmedStringExtensions
 	{
