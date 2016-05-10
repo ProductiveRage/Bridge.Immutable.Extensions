@@ -4,7 +4,11 @@ using Bridge.React;
 
 namespace ProductiveRage.Immutable.Extensions
 {
-	public sealed class NonBlankTrimmedString
+	// While I think that 99% of classes should be either abstract or sealed, this has value in not being sealed it is likely to be a common base for other
+	// types that may want to effectively be a NonBlankTrimmedString-with-some-extra-validation (or just a specialisation of NonBlankTrimmedString to aid
+	// API documentation). This makes some things more complicated, like the Equals implementation (if the type was sealed then the type comparisons
+	// would not be required).
+	public class NonBlankTrimmedString
 	{
 		public NonBlankTrimmedString(string value)
 		{
@@ -25,6 +29,9 @@ namespace ProductiveRage.Immutable.Extensions
 		/// </summary>
 		public static implicit operator string(NonBlankTrimmedString value)
 		{
+			// A null NonBlankTrimmedString should be mapped onto a null string. As an example, if props.ClassName is Optional<NonBlankTrimmedString> then
+			// the below would result in a call to this implicit operator for a null value, which would error here unless we support null -
+			//   string x = props.ClassName.IsDefined ? props.ClassName.Value : null;
 			if (value == null)
 				return null;
 			return value.Value;
@@ -37,17 +44,29 @@ namespace ProductiveRage.Immutable.Extensions
 		/// </summary>
 		public static implicit operator Any<ReactElement, string>(NonBlankTrimmedString value)
 		{
+			// Support null input for the same sort of reason as in the to-string operator above
 			if (value == null)
-				throw new ArgumentNullException("value");
-			return value.Value;
+				return null;
+
+			var text = value.Value;
+			return Script.Write<Any<ReactElement, string>>("text");
 		}
 
-		public override bool Equals(object o)
+		public static bool operator ==(NonBlankTrimmedString x, NonBlankTrimmedString y)
 		{
-			var otherNonBlankTrimmedString = o as NonBlankTrimmedString;
-			return
-			  (otherNonBlankTrimmedString != null) &&
-			  (otherNonBlankTrimmedString.Value == Value);
+			return x.Equals(y);
+		}
+
+		public static bool operator !=(NonBlankTrimmedString x, NonBlankTrimmedString y)
+		{
+			return !(x == y);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if ((obj == null) || (obj.GetType() != this.GetType()))
+				return false;
+			return ((NonBlankTrimmedString)obj).Value == Value;
 		}
 
 		public override int GetHashCode()
