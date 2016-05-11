@@ -36,6 +36,8 @@
     <DocumentationFile>bin\Release\ProductiveRage.Immutable.Extensions.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ComponentKeyGenerator.cs" />
+    <Compile Include="RequestId.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ClassName.cs" />
     <Compile Include="NonBlankTrimmedString.cs" />
