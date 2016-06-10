@@ -54,7 +54,14 @@ namespace ProductiveRage.Immutable
 
 		public static bool operator ==(NonBlankTrimmedString x, NonBlankTrimmedString y)
 		{
-			return x.Equals(y);
+			var xIsNull = Object.ReferenceEquals(x, null);
+			var yIsNull = Object.ReferenceEquals(y, null);
+			if (xIsNull && yIsNull)
+				return true;
+			else if (xIsNull || yIsNull)
+				return false;
+			else
+				return x.Equals(y);
 		}
 
 		public static bool operator !=(NonBlankTrimmedString x, NonBlankTrimmedString y)
