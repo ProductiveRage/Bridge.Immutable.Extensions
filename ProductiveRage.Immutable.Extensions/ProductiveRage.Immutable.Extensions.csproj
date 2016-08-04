@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ComponentKeyGenerator.cs" />
+    <Compile Include="ClassNameExtensions.cs" />
     <Compile Include="RequestId.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ClassName.cs" />
