@@ -44,7 +44,7 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled)
 		{
-			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? new ClassName(classNameIfAny) : Optional<ClassName>.Missing;
+			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Any<string, int>>.Missing);
 		}
 
@@ -57,7 +57,7 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled, Any<string, int> key)
 		{
-			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? new ClassName(classNameIfAny) : Optional<ClassName>.Missing;
+			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, key);
 		}
 
