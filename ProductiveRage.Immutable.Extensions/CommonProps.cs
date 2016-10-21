@@ -18,7 +18,9 @@ namespace ProductiveRage.Immutable
 		public Action<T> OnChange { get; private set; }
 		public Optional<ClassName> ClassName { get; private set; }
 		public bool Disabled { get; private set; }
-		public Optional<Any<string, int>> Key { get; private set; }
+
+		// A Key property may be set by the CommonProps initialisation below but there is no need to expose that information since it is for React's benefit only (so there is no "Key"
+		// property here)
 	}
 
 	public static class CommonProps
@@ -26,7 +28,7 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange)
 		{
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, Optional<ClassName>.Missing, false, Optional<Any<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, Optional<ClassName>.Missing, false, null);
 		}
 
 		[IgnoreGeneric]
@@ -38,14 +40,14 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled)
 		{
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Any<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, null);
 		}
 
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled)
 		{
 			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Any<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, null);
 		}
 
 		[IgnoreGeneric]
@@ -62,13 +64,15 @@ namespace ProductiveRage.Immutable
 		}
 
 		[IgnoreGeneric]
-		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Optional<Any<string, int>> key)
+		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Any<string, int> key)
 		{
 			if (state == null)
 				throw new ArgumentNullException("state");
 			if (onChange == null)
 				throw new ArgumentNullException("onChange");
 
+			// Note: The key argument may be null but this is one of the places that we don't want to model that using Optional<T> since we want to be sure that it
+			// is actually stored as null in the CommonProps object, so that React doesn't try to interpret a Missing Optional value as the key to use
 			return Script.Write<CommonProps<T>>("{ state: state, onChange: onChange, className: className, disabled: disabled, key: key }");
 		}
 	}
