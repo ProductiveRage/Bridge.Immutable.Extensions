@@ -22,5 +22,18 @@ namespace ProductiveRage.Immutable
 
 			return Set.Of(values.ToArray());
 		}
+
+		/// <summary>
+		/// This will throw an exception for any null references (either the values set or any reference within that set)
+		/// since the Set type will not accept any nulls (if it must potentially contain missing values then type T should
+		/// be an Optional of some type)
+		/// </summary>
+		public static NonNullList<T> ToNonNullList<T>(this IEnumerable<T> values)
+		{
+			if (values == null)
+				throw new ArgumentNullException("values");
+
+			return NonNullList.Of(values.ToArray());
+		}
 	}
 }
