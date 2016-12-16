@@ -32,7 +32,7 @@ namespace ProductiveRage.Immutable
 		}
 
 		[IgnoreGeneric]
-		public static CommonProps<T> For<T>(T state, Action<T> onChange, Any<string, int> key)
+		public static CommonProps<T> For<T>(T state, Action<T> onChange, Union<string, int> key)
 		{
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, Optional<ClassName>.Missing, false, key);
 		}
@@ -51,20 +51,20 @@ namespace ProductiveRage.Immutable
 		}
 
 		[IgnoreGeneric]
-		public static CommonProps<T> For<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Any<string, int> key)
+		public static CommonProps<T> For<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Union<string, int> key)
 		{
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, key);
 		}
 
 		[IgnoreGeneric]
-		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled, Any<string, int> key)
+		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled, Union<string, int> key)
 		{
 			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, key);
 		}
 
 		[IgnoreGeneric]
-		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Any<string, int> key)
+		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Union<string, int> key)
 		{
 			if (state == null)
 				throw new ArgumentNullException("state");

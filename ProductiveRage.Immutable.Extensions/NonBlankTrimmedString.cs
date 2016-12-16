@@ -42,14 +42,14 @@ namespace ProductiveRage.Immutable
 		/// that requires a ReactElement-or-string, such as for the children array of the React
 		/// DOM component factories
 		/// </summary>
-		public static implicit operator Any<ReactElement, string>(NonBlankTrimmedString value)
+		public static implicit operator Union<ReactElement, string>(NonBlankTrimmedString value)
 		{
 			// Support null input for the same sort of reason as in the to-string operator above
 			if (value == null)
 				return null;
 
 			var text = value.Value;
-			return Script.Write<Any<ReactElement, string>>("text");
+			return Script.Write<Union<ReactElement, string>>("text");
 		}
 
 		public static bool operator ==(NonBlankTrimmedString x, NonBlankTrimmedString y)
