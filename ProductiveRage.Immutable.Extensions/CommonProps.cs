@@ -14,11 +14,15 @@ namespace ProductiveRage.Immutable
 		/// </summary>
 		private CommonProps() { }
 
-		public T State { get; }
+		public T Model { get; }
 		public Action<T> OnChange { get; }
 		public Optional<ClassName> ClassName { get; }
-		public bool Disabled { get;  }
+		public bool Disabled { get; }
 		public Optional<Union<string, int>> Key { get; }
+
+		// 2017-04-28 DWR: I'd like to rename all of the "state" properties in the construction methods below but that could break existing code too (maybe one day in the future)
+		[Obsolete("The 'State'property was confusingly-named since it did not relate to the React concept of State (where a Component has a Props reference and a State instance) and so it has been renamed to Model (as in View Model) - this property is an alias on to Model and exists for backwards compatibility but will be removed in a future version of the library")]
+		public T State { [Template("model")]get; }
 	}
 
 	public static class CommonProps
@@ -62,14 +66,14 @@ namespace ProductiveRage.Immutable
 		}
 
 		[IgnoreGeneric]
-		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled, Optional<Union<string, int>> key)
+		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T model, Action<T> onChange, Optional<ClassName> className, bool disabled, Optional<Union<string, int>> key)
 		{
-			if (state == null)
-				throw new ArgumentNullException("state");
+			if (model == null)
+				throw new ArgumentNullException(nameof(model));
 			if (onChange == null)
-				throw new ArgumentNullException("onChange");
+				throw new ArgumentNullException(nameof(onChange));
 
-			return Script.Write<CommonProps<T>>("{ state: state`, onChange: onChange, className: className, disabled: disabled, key: key }");
+			return Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled, key: key }");
 		}
 	}
 }
