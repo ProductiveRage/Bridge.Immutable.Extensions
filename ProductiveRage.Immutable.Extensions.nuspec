@@ -14,9 +14,9 @@
     <copyright>Copyright 2016 ProductiveRage</copyright>
     <tags>C# bridge bridge.net react react-js</tags>
     <dependencies>
-      <dependency id="Bridge.Min" version="1.15.0" />
-      <dependency id="Bridge.React" version="1.8.4" />
-      <dependency id="ProductiveRage.Immutable" version="1.9.3" />
+      <dependency id="Bridge.Min" version="15.7.0" />
+      <dependency id="Bridge.React" version="1.12.6" />
+      <dependency id="ProductiveRage.Immutable" version="1.12.2" />
     </dependencies>
   </metadata>
   <files>

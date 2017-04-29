@@ -15,7 +15,7 @@ namespace ProductiveRage.Immutable
 		/// where there is no "persistence id" to rely upon. This function will generate a new key that is guaranteed to be unique from any other keys that it
 		/// has returned (so it is not safe to have a set of child components where some use keys from here and some use keys from elsewhere).
 		/// </summary>
-		public static Any<string, int> GetNew()
+		public static Union<string, int> GetNew()
 		{
 			// This uses the same logic as the RequestId, but we can't use just re-use the RequestId's code since it doesn't expose its internal requestTime and
 			// requestOffset values. Also, we may want to change this logic in the future.
