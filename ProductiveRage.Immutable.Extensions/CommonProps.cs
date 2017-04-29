@@ -18,11 +18,13 @@ namespace ProductiveRage.Immutable
 		public Action<T> OnChange { get; }
 		public Optional<ClassName> ClassName { get; }
 		public bool Disabled { get; }
-		public Optional<Union<string, int>> Key { get; }
 
 		// 2017-04-28 DWR: I'd like to rename all of the "state" properties in the construction methods below but that could break existing code too (maybe one day in the future)
 		[Obsolete("The 'State'property was confusingly-named since it did not relate to the React concept of State (where a Component has a Props reference and a State instance) and so it has been renamed to Model (as in View Model) - this property is an alias on to Model and exists for backwards compatibility but will be removed in a future version of the library")]
 		public T State { [Template("model")]get; }
+
+		// A Key property may be set by the CommonProps initialisation below but there is no need to expose that information since it is for React's benefit only (so there is no "Key"
+		// property here)
 	}
 
 	public static class CommonProps
@@ -30,7 +32,7 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange)
 		{
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, Optional<ClassName>.Missing, false, Optional<Union<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, Optional<ClassName>.Missing, false, null);
 		}
 
 		[IgnoreGeneric]
@@ -42,13 +44,13 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, Optional<ClassName> className, bool disabled)
 		{
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Union<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, null);
 		}
 
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled)
 		{
-			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? new ClassName(classNameIfAny) : Optional<ClassName>.Missing;
+			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Union<string, int>>.Missing);
 		}
 
@@ -61,7 +63,7 @@ namespace ProductiveRage.Immutable
 		[IgnoreGeneric]
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled, Union<string, int> key)
 		{
-			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? new ClassName(classNameIfAny) : Optional<ClassName>.Missing;
+			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
 			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, key);
 		}
 
@@ -73,6 +75,8 @@ namespace ProductiveRage.Immutable
 			if (onChange == null)
 				throw new ArgumentNullException(nameof(onChange));
 
+			// Note: The key argument may be null but this is one of the places that we don't want to model that using Optional<T> since we want to be sure that it
+			// is actually stored as null in the CommonProps object, so that React doesn't try to interpret a Missing Optional value as the key to use
 			return Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled, key: key }");
 		}
 	}
