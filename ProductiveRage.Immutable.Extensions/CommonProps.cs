@@ -14,10 +14,10 @@ namespace ProductiveRage.Immutable
 		/// </summary>
 		private CommonProps() { }
 
-		public T Model { get; }
-		public Action<T> OnChange { get; }
-		public Optional<ClassName> ClassName { get; }
-		public bool Disabled { get; }
+		public T Model { [Template("model")]get; }
+		public Action<T> OnChange { [Template("onChange")]get; }
+		public Optional<ClassName> ClassName { [Template("className")]get; }
+		public bool Disabled { [Template("disabled")]get; }
 
 		// 2017-04-28 DWR: I'd like to rename all of the "state" properties in the construction methods below but that could break existing code too (maybe one day in the future)
 		[Obsolete("The 'State'property was confusingly-named since it did not relate to the React concept of State (where a Component has a Props reference and a State instance) and so it has been renamed to Model (as in View Model) - this property is an alias on to Model and exists for backwards compatibility but will be removed in a future version of the library")]
