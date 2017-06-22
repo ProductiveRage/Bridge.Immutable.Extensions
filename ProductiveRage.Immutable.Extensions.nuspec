@@ -3,7 +3,7 @@
   <metadata>
     <id>ProductiveRage.Immutable.Extensions</id>
     <title>ProductiveRage.Immutable.Extensions</title>
-    <version>2.3.0-beta</version>
+    <version>2.3.1-beta</version>
     <authors>ProductiveRage</authors>
     <owners>ProductiveRage</owners>
     <licenseUrl>https://github.com/ProductiveRage/Bridge.Immutable.Extensions/blob/master/LICENSE</licenseUrl>
@@ -11,12 +11,12 @@
     <iconUrl>https://secure.gravatar.com/avatar/6a1f781d4d5e2d50dcff04f8f049767a?s=200</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common classes and extension methods for use with the ProductiveRage.Immutable library</description>
-    <copyright>Copyright 2016 ProductiveRage</copyright>
+    <copyright>Copyright 2017 ProductiveRage</copyright>
     <tags>C# bridge bridge.net react react-js</tags>
     <dependencies>
-      <dependency id="Bridge.Min" version="16.0.0-beta2" />
+      <dependency id="Bridge.Min" version="16.0.0-beta3" />
       <dependency id="Bridge.React" version="2.6.2-beta" />
-      <dependency id="ProductiveRage.Immutable" version="2.4.0-beta" />
+      <dependency id="ProductiveRage.Immutable" version="2.5.1-beta" />
     </dependencies>
   </metadata>
   <files>

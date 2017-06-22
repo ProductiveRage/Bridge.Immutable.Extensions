@@ -18,9 +18,6 @@ namespace ProductiveRage.Immutable
 			Value = value.Trim();
 		}
 
-		// This constructor only exists as a workaround until https://github.com/bridgedotnet/Bridge.Newtonsoft.Json/issues/4 is resolved
-		private NonBlankTrimmedString() : this("TO-BE-DESERIALISED") { }
-
 		/// <summary>
 		/// This will never be null, blank or have any leading or trailing whitespace
 		/// </summary>

@@ -36,7 +36,7 @@ namespace ProductiveRage.Immutable
 			if (values == null)
 				throw new ArgumentNullException("values");
 
-			return NonNullList.Of(values.ToArray());
+			return new NonNullList<T>(values);
 		}
 	}
 }
