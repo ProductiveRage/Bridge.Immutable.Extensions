@@ -30,7 +30,7 @@ namespace ProductiveRage.Immutable
 
 			return string.Format(
 				"{0}-{1}",
-				requestTime.GetTime(),
+				requestTime.Ticks,
 				_offsetOfLastId
 			);
 		}
