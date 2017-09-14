@@ -95,6 +95,18 @@ namespace ProductiveRage.Immutable
 		}
 
 		/// <summary>
+		/// This changes an Optional ResultOrError into a ResultOrError by setting a Missing value to an error ResultOrError, populating it with a provided error message (if the ResultOrError
+		/// is already populated, whether as a Result or an Error) then the instance will be returned unaltered
+		/// </summary>
+		public static ResultOrError<T> SetErrorIfNoValue<T>(this Optional<ResultOrError<T>> source, NonBlankTrimmedString errorMessage)
+		{
+			if (errorMessage == null)
+				throw new ArgumentNullException(nameof(errorMessage));
+	
+			return source.GetValueOrDefault(ResultOrError<T>.FromError(errorMessage));
+		}
+
+		/// <summary>
 		/// To deal correctly with all of the no-value, error, result states it is strongly recommended that the Match methods be used but there are some times where you just want to be
 		/// able to say give me the if you have it (and Missing if not). On those occasions, this method may be used.
 		/// </summary>
