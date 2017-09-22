@@ -9,12 +9,13 @@ namespace ProductiveRage.Immutable
 		/// <summary>
 		/// It is common to want to match an Optional Result-or-Errort to one of three ReactElements (a loading state, an error state and a result state) but if all three delegates are specified as anonymous
 		/// lambdas and they all return custom components (that are derived from Bridge.React's Component, PureComponent or StatelessComponent) then the compiler will not be able to infer a common base type
-		/// for them and so type inference on the two-type-argument Match method will fail. Having this method signature gives the compiler a big enough clue that it can work out that common case.
+		/// for them and so type inference on the two-type-argument Match method will fail. Having this method signature gives the compiler a big enough clue that it can work out that common case. In almost
+		/// all methods, null is not an acceptable input but for ReactElement values it IS acceptable and is used to indicate that nothing should be rendered - as such, the handleNoValue value may be null
+		/// and the handleResult and handleError delegates may return null.
 		/// </summary>
 		public static ReactElement Match<T>(this Optional<ResultOrError<T>> source, ReactElement handleNoValue, Func<T, ReactElement> handleResult, Func<NonBlankTrimmedString, ReactElement> handleError)
 		{
-			if (handleNoValue == null)
-				throw new ArgumentNullException(nameof(handleNoValue));
+			// Note: handleNoValue is allowed to be null because a null ReactElement is a valid reference (see note in the comment above)
 			if (handleResult == null)
 				throw new ArgumentNullException(nameof(handleResult));
 			if (handleError == null)
