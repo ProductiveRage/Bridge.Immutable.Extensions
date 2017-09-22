@@ -37,6 +37,7 @@
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ResultOrErrorExtensions.cs" />
     <Compile Include="ResultOrError.cs" />
     <Compile Include="OptionalResultOrErrorExtensions.cs" />
     <Compile Include="ComponentKeyGenerator.cs" />
