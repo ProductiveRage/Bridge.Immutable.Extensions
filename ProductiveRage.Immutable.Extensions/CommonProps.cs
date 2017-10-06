@@ -51,7 +51,7 @@ namespace ProductiveRage.Immutable
 		public static CommonProps<T> For<T>(T state, Action<T> onChange, string classNameIfAny, bool disabled)
 		{
 			var className = string.IsNullOrWhiteSpace(classNameIfAny) ? Optional<ClassName>.Missing : new ClassName(classNameIfAny);
-			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, Optional<Union<string, int>>.Missing);
+			return BuildCommonPropsObjectLiteral<T>(state, onChange, className, disabled, null);
 		}
 
 		[IgnoreGeneric]
@@ -68,16 +68,19 @@ namespace ProductiveRage.Immutable
 		}
 
 		[IgnoreGeneric]
-		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T model, Action<T> onChange, Optional<ClassName> className, bool disabled, Optional<Union<string, int>> key)
+		private static CommonProps<T> BuildCommonPropsObjectLiteral<T>(T model, Action<T> onChange, Optional<ClassName> className, bool disabled, Union<string, int> key)
 		{
 			if (model == null)
 				throw new ArgumentNullException(nameof(model));
 			if (onChange == null)
 				throw new ArgumentNullException(nameof(onChange));
 
-			// Note: The key argument may be null but this is one of the places that we don't want to model that using Optional<T> since we want to be sure that it
-			// is actually stored as null in the CommonProps object, so that React doesn't try to interpret a Missing Optional value as the key to use
-			return Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled, key: key }");
+			// Only include a "key" property if key is non-null (React interprets null as a key value and if multiple components have a null key then they will be considered
+			// to both have the same key, as opposed to them both having NO key, which we want to avoid);
+			var props = Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled, key: key }");
+			if (key != null)
+				Script.Write("{0}.key = {1}", props, key);
+			return props;
 		}
 	}
 }
