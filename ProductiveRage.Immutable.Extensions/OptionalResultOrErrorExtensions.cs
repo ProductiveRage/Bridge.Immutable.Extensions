@@ -108,8 +108,24 @@ namespace ProductiveRage.Immutable
 		}
 
 		/// <summary>
+		/// To deal correctly with all of the no-value, error, result states it is strongly recommended that the Match methods be used but there are some times where you just want to be able
+		/// to say 'call this delegate me the result if you have it (and don't call it at all if there is no value or if there is an error)'. On those occasions, this method may be used.
+		/// </summary>
+		public static void DoIfResult<T>(this Optional<ResultOrError<T>> source, Action<T> work)
+		{
+			if (work == null)
+				throw new ArgumentNullException(nameof(work));
+
+			source.Match(
+				handleNoValue: () => { },
+				handleError: error => { },
+				handleResult: work
+			);
+		}
+
+		/// <summary>
 		/// To deal correctly with all of the no-value, error, result states it is strongly recommended that the Match methods be used but there are some times where you just want to be
-		/// able to say give me the if you have it (and Missing if not). On those occasions, this method may be used.
+		/// able to say 'give me the result if you have it (and Missing if not)'. On those occasions, this method may be used.
 		/// </summary>
 		public static Optional<T> TryToGetResult<T>(this Optional<ResultOrError<T>> value)
 		{
