@@ -77,7 +77,7 @@ namespace ProductiveRage.Immutable
 
 			// Only include a "key" property if key is non-null (React interprets null as a key value and if multiple components have a null key then they will be considered
 			// to both have the same key, as opposed to them both having NO key, which we want to avoid);
-			var props = Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled, key: key }");
+			var props = Script.Write<CommonProps<T>>("{ model: model, onChange: onChange, className: className, disabled: disabled }");
 			if (key != null)
 				Script.Write("{0}.key = {1}", props, key);
 			return props;
