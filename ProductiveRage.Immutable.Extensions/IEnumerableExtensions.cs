@@ -34,12 +34,18 @@ namespace ProductiveRage.Immutable
 		public static NonNullList<T> ToNonNullList<T>(this IEnumerable<T> values)
 		{
 			if (values == null)
-				throw new ArgumentNullException("values");
+				throw new ArgumentNullException(nameof(values));
 
-			if (values.Any())
-				return new NonNullList<T>(values);
-			else
+			// If it's already a NonNullList then do nothing other than cast
+			var nonNullList = values as NonNullList<T>;
+			if (nonNullList != null)
+				return nonNullList;
+
+			// If there are no items then return the static "Empty" instance rather than creating a new one
+			if (!values.Any())
 				return NonNullList<T>.Empty;
+
+			return new NonNullList<T>(values);
 		}
 	}
 }
