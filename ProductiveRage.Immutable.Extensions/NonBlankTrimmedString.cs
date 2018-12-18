@@ -8,6 +8,7 @@ namespace ProductiveRage.Immutable
 	// types that may want to effectively be a NonBlankTrimmedString-with-some-extra-validation (or just a specialisation of NonBlankTrimmedString to aid
 	// API documentation). This makes some things more complicated, like the Equals implementation (if the type was sealed then the type comparisons
 	// would not be required).
+	[ObjectLiteral(ObjectCreateMode.Constructor)]
 	public class NonBlankTrimmedString
 	{
 		public NonBlankTrimmedString(string value)
