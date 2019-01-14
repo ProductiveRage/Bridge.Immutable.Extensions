@@ -16,7 +16,7 @@
     <NoStdLib>true</NoStdLib>
     <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
     <AdditionalExplicitAssemblyReferences />
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,7 +38,11 @@
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="FixObjectLiteralToStringHack.cs" />
+    <Compile Include="ObjectLiteralFixes\ObjectLiteralDetection.cs" />
+    <Compile Include="ObjectLiteralFixes\QuickLookup.cs" />
+    <Compile Include="ObjectLiteralFixes\FixObjectLiteralGetHashCodeHack.cs" />
+    <Compile Include="ObjectLiteralFixes\FixObjectLiteralEqualsHack.cs" />
+    <Compile Include="ObjectLiteralFixes\FixObjectLiteralToStringHack.cs" />
     <Compile Include="ResultOrErrorExtensions.cs" />
     <Compile Include="ResultOrError.cs" />
     <Compile Include="OptionalResultOrErrorExtensions.cs" />

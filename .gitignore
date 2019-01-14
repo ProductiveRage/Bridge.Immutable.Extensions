@@ -198,3 +198,4 @@ FakesAssemblies/
 BuildNuGetPackage/*.dll
 BuildNuGetPackage/*.nu*
 BuildNuGetPackage/*.xml
+ProductiveRage.Immutable.Extensions.Tests/Bridge/output
