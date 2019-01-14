@@ -17,6 +17,15 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			ToStringTests();
 			EqualsTests();
 			DictionaryTests();
+
+			// TODO:
+			//  x 0. ToString()
+			//  x 1. String interpolation
+			//  x 2. String concatenation
+			//  x 3. Equals
+			//  x 4. Equals for returning false - both different values and different types
+			//    5. Optional<NonBlankTrimmedString> Equals
+			//    6. Optional<NonBlankTrimmedString> Equals for returning false
 		}
 
 		private static void ToStringTests()
@@ -41,26 +50,47 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			QUnit.Test("An instance of NonBlankTrimmedString is found to be equal to itself", assert =>
 			{
 				var x = new NonBlankTrimmedString("xyz");
-				AssertEqualsViaNonBlankTrimmedStringEqualsCall(assert, x, x);
+				AssertEqualsViaNonBlankTrimmedStringEqualsCall(assert, x, x, shouldBeEqual: true);
 			});
+
 			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are found to be equal when compared as NonBlankTrimmedString", assert =>
 			{
 				var x = new NonBlankTrimmedString("xyz");
 				var y = new NonBlankTrimmedString("xyz");
-				AssertEqualsViaNonBlankTrimmedStringEqualsCall(assert, x, y);
+				AssertEqualsViaNonBlankTrimmedStringEqualsCall(assert, x, y, shouldBeEqual: true);
 			});
 			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are found to be equal when compared as generic type param of NonBlankTrimmedString", assert =>
 			{
 				var x = new NonBlankTrimmedString("xyz");
 				var y = new NonBlankTrimmedString("xyz");
-				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y);
+				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: true);
 			});
 			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are found to be equal when compared as Object", assert =>
 			{
 				var x = new NonBlankTrimmedString("xyz");
 				var y = new NonBlankTrimmedString("xyz");
-				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y);
+				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: true);
 			});
+
+			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are NOT equal if they are of different types when compared as NonBlankTrimmedString", assert =>
+			{
+				var x = new NonBlankTrimmedString("xyz");
+				var y = new ClassName("xyz");
+				AssertEqualsViaNonBlankTrimmedStringEqualsCall(assert, x, y, shouldBeEqual: false);
+			});
+			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are NOT equal if they are of different types when compared as generic type param of NonBlankTrimmedString", assert =>
+			{
+				var x = new NonBlankTrimmedString("xyz");
+				var y = new ClassName("xyz");
+				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: false);
+			});
+			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are NOT equal if they are of different types when compared as Object", assert =>
+			{
+				var x = new NonBlankTrimmedString("xyz");
+				var y = new ClassName("xyz");
+				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: false);
+			});
+
 		}
 
 		private static void DictionaryTests()
@@ -78,31 +108,43 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			});
 		}
 
-		private static void AssertEqualsViaObjectEqualsCall(Assert assert, object x, object y)
+		private static void AssertEqualsViaObjectEqualsCall(Assert assert, object x, object y, bool shouldBeEqual)
 		{
 			if ((x == null) && (y == null))
 				return;
 
 			assert.Ok((x != null) && (y != null), "Unless both x and y are null, they must both NOT be null in order to be equal");
-			assert.Ok(x.Equals(y));
+			var result = x.Equals(y);
+			if (shouldBeEqual)
+				assert.Ok(x.Equals(y));
+			else
+				assert.NotOk(x.Equals(y));
 		}
 
-		private static void AssertEqualsViaNonBlankTrimmedStringEqualsCall(Assert assert, NonBlankTrimmedString x, NonBlankTrimmedString y)
+		private static void AssertEqualsViaNonBlankTrimmedStringEqualsCall(Assert assert, NonBlankTrimmedString x, NonBlankTrimmedString y, bool shouldBeEqual)
 		{
 			if ((x == null) && (y == null))
 				return;
 
 			assert.Ok((x != null) && (y != null), "Unless both x and y are null, they must both NOT be null in order to be equal");
-			assert.Ok(x.Equals(y));
+			var result = x.Equals(y);
+			if (shouldBeEqual)
+				assert.Ok(x.Equals(y));
+			else
+				assert.NotOk(x.Equals(y));
 		}
 
-		private static void AssertEqualsViaSharedGenericTypeEqualsCall<T>(Assert assert, T x, T y) where T : NonBlankTrimmedString
+		private static void AssertEqualsViaSharedGenericTypeEqualsCall<T>(Assert assert, T x, T y, bool shouldBeEqual) where T : NonBlankTrimmedString
 		{
 			if ((x == null) && (y == null))
 				return;
 
 			assert.Ok((x != null) && (y != null), "Unless both x and y are null, they must both NOT be null in order to be equal");
-			assert.Ok(x.Equals(y));
+			var result = x.Equals(y);
+			if (shouldBeEqual)
+				assert.Ok(x.Equals(y));
+			else
+				assert.NotOk(x.Equals(y));
 		}
 
 		// This class is part of the second reproduce case in https://forums.bridge.net/forum/community/help/6001
