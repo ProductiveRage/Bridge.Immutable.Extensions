@@ -17,15 +17,6 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			ToStringTests();
 			EqualsTests();
 			DictionaryTests();
-
-			// TODO:
-			//  x 0. ToString()
-			//  x 1. String interpolation
-			//  x 2. String concatenation
-			//  x 3. Equals
-			//  x 4. Equals for returning false - both different values and different types
-			//    5. Optional<NonBlankTrimmedString> Equals
-			//    6. Optional<NonBlankTrimmedString> Equals for returning false
 		}
 
 		private static void ToStringTests()
@@ -69,7 +60,29 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			{
 				var x = new NonBlankTrimmedString("xyz");
 				var y = new NonBlankTrimmedString("xyz");
+				AssertEqualsViaObjectEqualsCall(assert, x, y, shouldBeEqual: true);
+			});
+
+			// There was a hack in ProductiveRage.Immutable to help Optional<T>'s Equals implementation work when T is an [ObjectLiteral] but that isn't required with the hacks in this library
+			// (so, once I'm happy with this all, I'll remove them from ProductiveRage.Immutable, so 3.2.0 will have the hacks removed that were introduced in 3.1.0 - for now, the tests here
+			// are referencing the 3.0.0 NuGet package, which doesn't have the hacks in it)
+			QUnit.Test("Two instances of Optional<NonBlankTrimmedString> with the same value are found to be equal when compared as NonBlankTrimmedString", assert =>
+			{
+				var x = Optional.For(new NonBlankTrimmedString("xyz"));
+				var y = Optional.For(new NonBlankTrimmedString("xyz"));
+				AssertEqualsViaOptionalNonBlankTrimmedStringEqualsCall(assert, x, y, shouldBeEqual: true);
+			});
+			QUnit.Test("Two instances of Optional<NonBlankTrimmedString> with the same value are found to be equal when compared as generic type param of NonBlankTrimmedString", assert =>
+			{
+				var x = Optional.For(new NonBlankTrimmedString("xyz"));
+				var y = Optional.For(new NonBlankTrimmedString("xyz"));
 				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: true);
+			});
+			QUnit.Test("Two instances of Optional<NonBlankTrimmedString> with the same value are found to be equal when compared as Object", assert =>
+			{
+				var x = Optional.For(new NonBlankTrimmedString("xyz"));
+				var y = Optional.For(new NonBlankTrimmedString("xyz"));
+				AssertEqualsViaObjectEqualsCall(assert, x, y, shouldBeEqual: true);
 			});
 
 			QUnit.Test("Two instances of NonBlankTrimmedString with the same value are NOT equal if they are of different types when compared as NonBlankTrimmedString", assert =>
@@ -88,9 +101,8 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			{
 				var x = new NonBlankTrimmedString("xyz");
 				var y = new ClassName("xyz");
-				AssertEqualsViaSharedGenericTypeEqualsCall(assert, x, y, shouldBeEqual: false);
+				AssertEqualsViaObjectEqualsCall(assert, x, y, shouldBeEqual: false);
 			});
-
 		}
 
 		private static void DictionaryTests()
@@ -133,8 +145,20 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 			else
 				assert.NotOk(x.Equals(y));
 		}
+		private static void AssertEqualsViaOptionalNonBlankTrimmedStringEqualsCall(Assert assert, Optional<NonBlankTrimmedString> x, Optional<NonBlankTrimmedString> y, bool shouldBeEqual)
+		{
+			if ((x == null) && (y == null))
+				return;
 
-		private static void AssertEqualsViaSharedGenericTypeEqualsCall<T>(Assert assert, T x, T y, bool shouldBeEqual) where T : NonBlankTrimmedString
+			assert.Ok((x != null) && (y != null), "Unless both x and y are null, they must both NOT be null in order to be equal");
+			var result = x.Equals(y);
+			if (shouldBeEqual)
+				assert.Ok(x.Equals(y));
+			else
+				assert.NotOk(x.Equals(y));
+		}
+
+		private static void AssertEqualsViaSharedGenericTypeEqualsCall<T>(Assert assert, T x, T y, bool shouldBeEqual)
 		{
 			if ((x == null) && (y == null))
 				return;
