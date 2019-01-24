@@ -103,6 +103,26 @@ namespace ProductiveRage.Immutable.Extensions.Tests
 				var y = new ClassName("xyz");
 				AssertEqualsViaObjectEqualsCall(assert, x, y, shouldBeEqual: false);
 			});
+
+			// This tests a few issues that have been encountered after using [ObjectLiteral] in more places - the FixObjectLiteralEqualsHack approach means that the implicit operator will
+			// not reliably be called when comparing an Optional<T> to T (the fix for that is in 4.1.0 of ProductiveRage.Immutable) and FixObjectLiteralEqualsHack now supports "falling
+			// through" equality checks if false is returned (so is comparing a NonBlankTrimmedString, which is an [ObjectLiteral], to an Optional<NonBlankTrimmedString> then the Equals
+			// check made against the NonBlankTrimmedString's Equals method will return false as it is unaware of Optional's implicit casting support and so other Equals methods need to
+			// be give opportunity to run) and it tests a bug with FixObjectLiteralEqualsHack relating to different generic types where the cached Equals lookup for an [ObjectLiteral]
+			// generic class would result in type checks against the generic type parameters being incorrect.
+			QUnit.Test("Integration tests around NonBlankTrimmedString / Optional / another [ObjectLiteral]", assert =>
+			{
+				var stringValue = new NonBlankTrimmedString("test");
+				var optionalOfString = Optional.For(stringValue);
+				var resultOrErrorOfString = ResultOrErrorDetails.FromResult(stringValue);
+
+				assert.NotOk(Equals(optionalOfString, resultOrErrorOfString));
+				assert.Ok(Equals(optionalOfString, stringValue));
+				assert.Ok(Equals(stringValue, optionalOfString));
+				assert.Ok(Equals(ResultOrErrorDetails.FromResult("abc"), ResultOrErrorDetails.FromResult("abc")));
+				assert.Ok(Equals(ResultOrErrorDetails.FromResult(new NonBlankTrimmedString("abc")), ResultOrErrorDetails.FromResult(new NonBlankTrimmedString("abc"))));
+				assert.NotOk(Equals(ResultOrErrorDetails.FromResult(new NonBlankTrimmedString("abc")), ResultOrErrorDetails.FromResult("abc")));
+			});
 		}
 
 		private static void DictionaryTests()

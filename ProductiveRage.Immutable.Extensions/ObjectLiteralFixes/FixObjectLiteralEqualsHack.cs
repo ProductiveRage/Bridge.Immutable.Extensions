@@ -31,13 +31,23 @@ namespace ProductiveRage.Immutable
 		{
 			return (x, y) =>
 			{
+				// There are some difficult cases to consider here - in the simplest interesting case, both objects are of the same [ObjectLiteral] type and that type has an Equals method and
+				// we call it against the first object, passing a reference to the second. The next simplest interesting case is when one of the objects is null and the other is an [ObjectLiteral]
+				// with an Equals method. But things start to get more complicated if the first object is a non-null [ObjectLiteral] and the second is a non-null non-[ObjectLiteral] - for example,
+				// if x is a NonBlankTrimmedString ([ObjectLiteral]) and y is an Optional<NonBlankTrimmedString> (non-[ObjectLiteral]) then the NonBlankTrimmedString Equals will say that they don't
+				// match (because their types are not the same) but the Optional<NonBlankTrimmedString> Equals method would say that they DO - and that should be allowed a chance to do so.
 				var customObjectLiteralMethodForFirstArgumentIfAny = TryToCustomObjectLiteralEqualsMethod(x);
 				if (customObjectLiteralMethodForFirstArgumentIfAny != null)
-					return Script.Write<bool>("{0}.apply({1}, [{2}])", customObjectLiteralMethodForFirstArgumentIfAny, x, y);
-
+				{
+					if (Script.Write<bool>("{0}.apply({1}, [{2}])", customObjectLiteralMethodForFirstArgumentIfAny, x, y))
+						return true;
+				}
 				var customObjectLiteralMethodForSecondArgumentIfAny = TryToCustomObjectLiteralEqualsMethod(y);
 				if (customObjectLiteralMethodForSecondArgumentIfAny != null)
-					return Script.Write<bool>("{0}.apply({1}, [{2}])", customObjectLiteralMethodForSecondArgumentIfAny, y, x);
+				{
+					if (Script.Write<bool>("{0}.apply({1}, [{2}])", customObjectLiteralMethodForSecondArgumentIfAny, y, x))
+						return true;
+				}
 
 				// Pass the full arguments array to bridgeEquals in case the Bridge internals include any additional metadata arguments, other than just the x and y values
 				return Script.Write<bool>("{0}.apply(this, arguments)", bridgeEquals);
